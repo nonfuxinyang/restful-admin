@@ -1,0 +1,16 @@
+{
+  "AUTH-PER-01": {
+    "code": "AUTH-PER-01",
+    "msg": "抱歉，您没有访问权限",
+    "innerMsg": "抱歉，您没有访问权限"
+  },
+  "AUTH-PER-02": {
+    "code": "AUTH-PER-02",
+    "msg": "获取权限列表失败",
+    "innerMsg": ""
+  },"AUTH-LOGIN-01": {
+  "code": "AUTH-LOGIN-01",
+  "msg": "账号或密码不正确",
+  "innerMsg": ""
+}
+}
