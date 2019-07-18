@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 登录成功处理类
+ * 登录成功处理类,登录成功后会调用里面的方法
  * @author Exrickx
  */
 @Slf4j
@@ -33,7 +33,7 @@ public class CustomerAuthenticationSuccessHandler implements AuthenticationSucce
         log.info("登陆成功...");
         CustomerUserDetails principal = (CustomerUserDetails) authentication.getPrincipal();
         //颁发token
-        Map emptyMap = new HashMap(4);
+        Map<String,Object> emptyMap = new HashMap<>(4);
         emptyMap.put(UserConstants.USER_ID,principal.getId());
         String token = JwtTokenUtil.generateToken(principal.getUsername(), emptyMap);
         ResponseUtil.out(ResultUtil.success(token));

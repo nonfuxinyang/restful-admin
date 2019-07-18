@@ -19,6 +19,10 @@ public interface ErrorCodeConstants {
   /**
    * 账号或密码不正确
    */
-  String LOGIN_FAIED = "AUTH-LOGIN-01";
+  String LOGIN_UNMATCH_ERROR = "AUTH-LOGIN-01";
+  /**
+   * 需要登录
+   */
+  String REQUIRED_LOGIN_ERROR = "AUTH-LOGIN-02";
 
 }

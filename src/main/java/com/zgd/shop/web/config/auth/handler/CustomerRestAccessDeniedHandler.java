@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 没有权限,被拒绝访问时的调用类
  * @author Exrickx
  */
 @Component

@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 登出成功的调用类
+ * @author zzzgd
+ */
 @Component
 public class CustomerLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override

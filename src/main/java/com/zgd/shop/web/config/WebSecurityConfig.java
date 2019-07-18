@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)// 控制@Secured权限注解
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)// 控制@Secured权限注解
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   /**
@@ -45,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private CustomerRestAccessDeniedHandler customerRestAccessDeniedHandler;
   @Autowired
   private CustomerLogoutSuccessHandler customerLogoutSuccessHandler;
-
-
+  @Autowired
+  private CustomerAuthenticationEntryPoint customerAuthenticationEntryPoint;
 
 
   @Bean
@@ -103,18 +104,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .frameOptions().disable();
 
     http
-            .exceptionHandling().accessDeniedHandler(customerRestAccessDeniedHandler);
+            //登录后,访问没有权限处理类
+            .exceptionHandling().accessDeniedHandler(customerRestAccessDeniedHandler)
+            //匿名访问,没有权限的处理类
+            .authenticationEntryPoint(customerAuthenticationEntryPoint)
+    ;
 
-    //使用jwt的Authentication
+    //使用jwt的Authentication,来解析过来的请求是否有token
     http
-            .addFilterBefore(customerJwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(customerJwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
 
     http
             .authorizeRequests()
             //这里表示"/any"和"/ignore"不需要权限校验
-            .antMatchers( "/ignore/**", "/login", "/**/register/**").permitAll()
+            .antMatchers("/ignore/**", "/login", "/**/register/**").permitAll()
             .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/emp/**").hasAnyRole("ADMIN","EMPLOYEE")
+            .antMatchers("/emp/**").hasAnyRole("ADMIN", "EMPLOYEE")
             .anyRequest().authenticated()
             // 这里表示任何请求都需要校验认证(上面配置的放行)
 
@@ -123,6 +129,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //配置登录,检测到用户未登录时跳转的url地址,登录放行
             .formLogin()
 //            .loginPage("/login.json")
+
             //成功后调用的的url
 //            .defaultSuccessUrl("/hello",true)
             //需要跟前端表单的action地址一致
@@ -131,8 +138,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .failureHandler(customerAuthenticationFailHandler)
             //失败后重定向的url,默认是[loginPage] + [?error]
 //            .failureForwardUrl("/login.json?error=true")
-            .failureUrl("/login.json?error=true")
+//            .failureUrl("/login.json?error=true")
             .permitAll()
+
+            //配置取消session管理,又Jwt来获取用户状态,否则即使token无效,也会有session信息,依旧判断用户为登录状态
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
             //配置登出,登出放行
             .and()

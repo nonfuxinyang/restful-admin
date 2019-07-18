@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 登录账号密码错误等情况下,会调用的处理类
  * @author Exrickx
  */
 @Slf4j
@@ -24,7 +25,7 @@ public class CustomerAuthenticationFailHandler implements AuthenticationFailureH
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        ResponseUtil.out(401, ResultUtil.failure(ErrorCodeConstants.LOGIN_FAIED));
+        ResponseUtil.out(401, ResultUtil.failure(ErrorCodeConstants.LOGIN_UNMATCH_ERROR));
     }
 
 }

@@ -12,5 +12,9 @@
   "code": "AUTH-LOGIN-01",
   "msg": "账号或密码不正确",
   "innerMsg": ""
+},"AUTH-LOGIN-02": {
+  "code": "AUTH-LOGIN-02",
+  "msg": "请先登录",
+  "innerMsg": ""
 }
 }

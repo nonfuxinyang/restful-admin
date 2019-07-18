@@ -1,10 +1,13 @@
 package com.zgd.shop.core.error;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.zgd.shop.common.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,8 +25,7 @@ public class ErrorCache {
 
   static {
     String s = FileUtil.readResourceFile(ERROR_JSON_PATH);
-    HashMap hashMap = JSON.parseObject(s, HashMap.class);
-    errorCodeCache = hashMap;
+    errorCodeCache = JSON.parseObject(s, new TypeReference<HashMap<String,ErrorDto>>(){});
   }
 
 
