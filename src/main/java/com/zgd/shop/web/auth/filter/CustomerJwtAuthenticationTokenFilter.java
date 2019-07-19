@@ -33,6 +33,8 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
     CustomerUserDetailService customerUserDetailService;
     @Autowired
     UserSessionService userSessionService;
+    @Autowired
+    UserTokenManager userTokenManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -55,7 +57,7 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 CustomerUserDetails userDetails = userSessionService.getSessionByUsername(username);
                 if (userDetails != null){
                     //session未过期，重新颁发token
-                    UserTokenManager.awadAccessToken(userDetails);
+                    userTokenManager.awadAccessToken(userDetails);
                 }
             }
             CustomerUserDetails userDetails = userSessionService.getSessionByUsername(username);
