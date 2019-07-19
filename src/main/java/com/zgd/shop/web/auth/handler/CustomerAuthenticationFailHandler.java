@@ -1,4 +1,4 @@
-package com.zgd.shop.web.config.auth.handler;
+package com.zgd.shop.web.auth.handler;
 
 import com.zgd.shop.common.util.ResponseUtil;
 import com.zgd.shop.core.error.ErrorCodeConstants;
@@ -6,7 +6,6 @@ import com.zgd.shop.core.result.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;

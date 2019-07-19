@@ -148,7 +148,7 @@ public class JwtTokenUtil {
    * @param privateKey
    * @return
    */
-  public static Claims parseToken(String token, RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+  public static Claims parseToken(String token, RSAPublicKey publicKey, RSAPrivateKey privateKey)throws ExpiredJwtException {
     //密钥及加密算法 普通签名算法
     Key key;
     if (Objects.nonNull(publicKey) && Objects.nonNull(privateKey)) {
@@ -161,7 +161,7 @@ public class JwtTokenUtil {
       return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     } catch (ExpiredJwtException e) {
       log.error("[token解析失败] token过期");
-      return null;
+      throw e;
     } catch (Exception e) {
       log.error("[token解析失败] ",e);
       return null;

@@ -1,4 +1,4 @@
-package com.zgd.shop.web.config.auth.user;
+package com.zgd.shop.web.auth.user;
 
 import com.zgd.shop.common.constants.UserConstants;
 import com.zgd.shop.dao.entity.model.User;

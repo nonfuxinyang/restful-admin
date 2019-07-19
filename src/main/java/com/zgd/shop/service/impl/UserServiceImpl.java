@@ -11,7 +11,7 @@ import com.zgd.shop.service.IRoleService;
 import com.zgd.shop.service.IUserRoleService;
 import com.zgd.shop.service.IUserService;
 import com.zgd.shop.common.util.encryp.AESUtil;
-import com.zgd.shop.web.config.auth.encoder.MyAesPasswordEncoder;
+import com.zgd.shop.web.auth.encoder.MyAesPasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,10 @@
 package com.zgd.shop.web.config;
 
-import com.zgd.shop.web.config.auth.encoder.MyAesPasswordEncoder;
-import com.zgd.shop.web.config.auth.encoder.MyEmptyPasswordEncoder;
-import com.zgd.shop.web.config.auth.handler.*;
-import com.zgd.shop.web.config.auth.filter.CustomerJwtAuthenticationTokenFilter;
-import com.zgd.shop.web.config.auth.user.CustomerUserDetailService;
+import com.zgd.shop.web.auth.encoder.MyAesPasswordEncoder;
+import com.zgd.shop.web.auth.encoder.MyEmptyPasswordEncoder;
+import com.zgd.shop.web.auth.handler.*;
+import com.zgd.shop.web.auth.filter.CustomerJwtAuthenticationTokenFilter;
+import com.zgd.shop.web.auth.user.CustomerUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

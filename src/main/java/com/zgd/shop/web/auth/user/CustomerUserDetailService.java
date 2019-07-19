@@ -1,4 +1,4 @@
-package com.zgd.shop.web.config.auth.user;
+package com.zgd.shop.web.auth.user;
 
 import com.alibaba.fastjson.JSON;
 import com.zgd.shop.dao.entity.model.User;

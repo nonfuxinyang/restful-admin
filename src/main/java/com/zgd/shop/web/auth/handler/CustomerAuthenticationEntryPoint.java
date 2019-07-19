@@ -1,4 +1,4 @@
-package com.zgd.shop.web.config.auth.handler;
+package com.zgd.shop.web.auth.handler;
 
 
 import com.zgd.shop.common.util.ResponseUtil;

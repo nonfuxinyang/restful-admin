@@ -1,13 +1,16 @@
-package com.zgd.shop.web.config.auth.filter;
+package com.zgd.shop.web.auth.filter;
 
 import com.zgd.shop.common.constants.SecurityConstants;
 import com.zgd.shop.common.util.jwt.JwtTokenUtil;
-import com.zgd.shop.web.config.auth.user.CustomerUserDetailService;
+import com.zgd.shop.web.auth.user.CustomerUserDetailService;
+import com.zgd.shop.web.auth.user.CustomerUserDetails;
+import com.zgd.shop.web.auth.user.UserSessionService;
+import com.zgd.shop.web.auth.user.UserTokenManager;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,6 +31,8 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     CustomerUserDetailService customerUserDetailService;
+    @Autowired
+    UserSessionService userSessionService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -40,9 +45,24 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith(SecurityConstants.TOKEN_SPLIT)) {
 
             final String authToken = authHeader.substring(SecurityConstants.TOKEN_SPLIT.length());
-            String username = JwtTokenUtil.parseTokenGetUsername(authToken);
+
+            String username;
+            try {
+                username = JwtTokenUtil.parseTokenGetUsername(authToken);
+            } catch (ExpiredJwtException e) {
+                //token过期
+                username = e.getClaims().getSubject();
+                CustomerUserDetails userDetails = userSessionService.getSessionByUsername(username);
+                if (userDetails != null){
+                    //session未过期，重新颁发token
+                    UserTokenManager.awadAccessToken(userDetails);
+                }
+            }
+            CustomerUserDetails userDetails = userSessionService.getSessionByUsername(username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = customerUserDetailService.loadUserByUsername(username);
+//                UserDetails userDetails = customerUserDetailService.loadUserByUsername(username);
+                //避免每次请求都请求数据库查询用户信息，从缓存中查询
+
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

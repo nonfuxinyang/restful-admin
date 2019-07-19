@@ -1,4 +1,4 @@
-package com.zgd.shop.web.config.auth.encoder;
+package com.zgd.shop.web.auth.encoder;
 
 import com.zgd.shop.common.util.encryp.AESUtil;
 import lombok.extern.slf4j.Slf4j;
