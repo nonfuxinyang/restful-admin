@@ -15,8 +15,8 @@ public class ResultUtil {
 
   private static final int SUCCESS_CODE = 1;
   private static final int FAILURE_CODE = 0;
-  private static final String ERROR_CODE = "SYS-ERR-0";
-  private static final String ERROR_MSG = "网络繁忙，请稍后再试";
+  private static final String BASE_ERROR_CODE = "BASE-SYS-ERR-0";
+  private static final String BASE_ERROR_MSG = "网络繁忙，请稍后再试";
 
 
   /**
@@ -39,6 +39,15 @@ public class ResultUtil {
   }
 
 
+
+  /**
+   * 返回失败result
+   * @param <T>
+   * @return
+   */
+  public static <T>  Result<T> failureDefaultError(){
+    return failure(BASE_ERROR_CODE, BASE_ERROR_MSG,null);
+  }
 
 
   /**
@@ -89,12 +98,12 @@ public class ResultUtil {
         errMsg = ErrorCache.getMsg(errCode) ;
         if (StringUtils.isEmpty(errMsg)){
           log.info("[获取错误码] 未能获取错误信息 errCode：{}",errCode);
-          errMsg = ERROR_MSG;
+          errMsg = BASE_ERROR_MSG;
         }
       }
     }else {
-      errCode = ERROR_CODE;
-      errMsg = ERROR_MSG;
+      errCode = BASE_ERROR_CODE;
+      errMsg = BASE_ERROR_MSG;
     }
     return new Result<>(FAILURE_CODE, errCode, errMsg, data);
   }

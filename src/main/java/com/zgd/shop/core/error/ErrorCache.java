@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.zgd.shop.common.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +40,23 @@ public class ErrorCache {
     if (Objects.nonNull(errorDto)){
       return errorDto.getMsg();
     }
-    return null;
+    return "";
   }
 
-  public static void main(String[] args){
-    System.out.println("s");
+
+  /**
+   * 获取内部错误消息
+   * @param code
+   * @return
+   */
+  public static String getInternalMsg(String code){
+    ErrorDto errorDto = errorCodeCache.get(code);
+    if (Objects.nonNull(errorDto)){
+      String innerMsg = errorDto.getInnerMsg();
+      return StringUtils.isEmpty(innerMsg) ? errorDto.getMsg() : innerMsg;
+    }
+    return "";
+    }
   }
 
-}
+

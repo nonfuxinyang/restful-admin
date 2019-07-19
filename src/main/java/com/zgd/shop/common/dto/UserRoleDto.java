@@ -1,4 +1,4 @@
-package com.zgd.shop.dao.entity;
+package com.zgd.shop.common.dto;
 
 import lombok.Data;
 
