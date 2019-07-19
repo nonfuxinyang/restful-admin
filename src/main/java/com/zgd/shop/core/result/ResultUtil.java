@@ -77,7 +77,7 @@ public class ResultUtil {
    * @return
    */
   public static <T>  Result<T> failure(String errCode,String errMsg,T data){
-    return getResult(errCode, errMsg, data);
+    return getFailResult(errCode, errMsg, data);
   }
 
 
@@ -91,7 +91,7 @@ public class ResultUtil {
    * @author zgd
    * @date 2019/7/17 18:28
    */
-  private static <T> Result<T> getResult(String errCode, String errMsg, T data) {
+  private static <T> Result<T> getFailResult(String errCode, String errMsg, T data) {
     if (StringUtils.isNoneEmpty(errCode)){
       if (StringUtils.isEmpty(errMsg)){
         //获取msg

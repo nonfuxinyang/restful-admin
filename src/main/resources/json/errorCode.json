@@ -23,5 +23,10 @@
     "code": "USER-SELECT-01",
     "msg": "未找到该用户信息",
     "innerMsg": ""
+  },
+  "BASE-REQUEST-01": {
+    "code": "BASE-REQUEST-01",
+    "msg": "错误的请求",
+    "innerMsg": ""
   }
 }

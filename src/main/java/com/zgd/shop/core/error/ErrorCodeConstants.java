@@ -28,4 +28,9 @@ public interface ErrorCodeConstants {
    * 没有找到用户
    */
   String NOT_FOUND_USER_ERROR = "USER-SELECT-01";
+  /**
+   * 错误的请求
+   */
+  String BAD_REQUEST_ERROR = "BASE-REQUEST-01";
+
 }

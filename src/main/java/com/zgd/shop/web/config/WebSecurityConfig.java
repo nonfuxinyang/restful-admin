@@ -142,14 +142,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
 
             //配置取消session管理,又Jwt来获取用户状态,否则即使token无效,也会有session信息,依旧判断用户为登录状态
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .and()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
             //配置登出,登出放行
             .and()
             .logout()
             .logoutSuccessHandler(customerLogoutSuccessHandler)
-            .deleteCookies("JESSIONID")
+            .deleteCookies("JSESSIONID")
             .permitAll()
 
             //开启记住我功能,会给浏览器生成cookie

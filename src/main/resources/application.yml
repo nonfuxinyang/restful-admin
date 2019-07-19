@@ -58,7 +58,7 @@ logging:
 
 user-auth:
 #  sessionExpirationTime: 24 * 60 * 60 * 1000
-  jwtExpirationTime: 60000
+  jwtExpirationTime: 180000
 
 
 

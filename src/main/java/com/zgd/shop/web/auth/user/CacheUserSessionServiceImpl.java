@@ -42,7 +42,9 @@ public class CacheUserSessionServiceImpl implements UserSessionService , Initial
   @Override
   public void destroySession(String username) {
     String key = USER_SESSION_PREFIX + username;
+    String key1 = USER_TOKEN_TIMESTAMP_PREFIX + username;
     userDetailsCache.invalidate(key);
+    userDetailsCache.invalidate(key1);
   }
 
   @Override

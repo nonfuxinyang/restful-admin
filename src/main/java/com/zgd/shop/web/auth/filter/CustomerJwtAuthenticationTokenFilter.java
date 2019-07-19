@@ -1,7 +1,6 @@
 package com.zgd.shop.web.auth.filter;
 
 import com.zgd.shop.common.constants.SecurityConstants;
-import com.zgd.shop.common.constants.UserConstants;
 import com.zgd.shop.common.util.jwt.JwtTokenUtil;
 import com.zgd.shop.web.auth.user.CustomerUserDetailService;
 import com.zgd.shop.web.auth.user.CustomerUserDetails;
@@ -22,8 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 过滤器,在请求过来的时候,解析请求头中的token,再解析token得到用户信息,再存到SecurityContextHolder中
@@ -79,6 +76,7 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
                         UsernamePasswordAuthenticationToken authentication =
                                 new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
@@ -87,6 +85,12 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * 判断是否同一个时间戳
+     * @param username
+     * @param claims
+     * @return
+     */
     private boolean isSameTimestampToken(String username, Claims claims){
         Long timestamp = userSessionService.getTokenTimestamp(username);
         Long jwtTimestamp = (Long) claims.get(SecurityConstants.TIME_STAMP);
