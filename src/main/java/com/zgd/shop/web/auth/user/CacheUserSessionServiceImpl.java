@@ -21,8 +21,9 @@ public class CacheUserSessionServiceImpl implements UserSessionService , Initial
   @Autowired
   private UserAuthProperties userAuthProperties;
 
-  private Cache<String,CustomerUserDetails> userDetailsCache;
+  private Cache<String,Object> userDetailsCache;
   private static final String USER_SESSION_PREFIX = "USER-SESSION:";
+  private static final String USER_TOKEN_TIMESTAMP_PREFIX = "USER-TOKEN-TIMESTAMP:";
 
 
   @Override
@@ -35,7 +36,7 @@ public class CacheUserSessionServiceImpl implements UserSessionService , Initial
   @Override
   public CustomerUserDetails getSessionByUsername(String username) {
     String key = USER_SESSION_PREFIX + username;
-    return userDetailsCache.getIfPresent(key);
+    return (CustomerUserDetails) userDetailsCache.getIfPresent(key);
   }
 
   @Override
@@ -49,5 +50,17 @@ public class CacheUserSessionServiceImpl implements UserSessionService , Initial
     userDetailsCache = CacheBuilder.newBuilder()
             .expireAfterWrite(userAuthProperties.getSessionExpirationTime(), TimeUnit.MILLISECONDS)
             .build();
+  }
+
+  @Override
+  public void saveTokenTimestamp(String username, long mills) {
+    String key = USER_TOKEN_TIMESTAMP_PREFIX + username;
+    userDetailsCache.put(key,mills);
+  }
+
+  @Override
+  public Long getTokenTimestamp(String username) {
+    String key = USER_TOKEN_TIMESTAMP_PREFIX + username;
+    return (Long) userDetailsCache.getIfPresent(key);
   }
 }

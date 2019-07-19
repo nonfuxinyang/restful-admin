@@ -25,8 +25,8 @@ public class ResponseUtil {
     public static void out(int statusCode,Result result){
         out(statusCode,result,null);
     }
-    public static void outWithHeader(Result result,Map<String,String> map){
-        out(200,result,map);
+    public static void outWithHeader(int statusCode,Result result,Map<String,String> map){
+        out(statusCode,result,map);
     }
 
 

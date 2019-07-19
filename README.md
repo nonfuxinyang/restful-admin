@@ -156,7 +156,13 @@ thymeleaf静态模板一起使用.
 
 ```
 
-
+#### d. token颁发和过期
+1. 在登录成功后的`CustomerAuthenticationSuccessHandler`，创建并颁发token，状态码是200，在请求头中。
+并储存session信息在缓存，redis或本地cache。
+2. 在每次请求过来的时候，过滤器解析请求头，带有token标识则解析token，解析出username，查询缓存，如果有放入到
+SpringSecurity的上下文中。如果token过期，通过username查询缓存，如果能查询到（session没过期），颁发新的token，
+同样放到请求头，状态码为201。如果session中也没有，则放行。如果没有请求头没有token标识，直接放行
+3. SpringSecurity根据上下文自己去判断权限，直接放行的没有查到用户信息，对于需要权限的资源，返回AccessDeny的异常
 
 
 

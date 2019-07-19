@@ -13,4 +13,8 @@ public interface UserSessionService {
   CustomerUserDetails getSessionByUsername(String username);
 
   void destroySession(String username);
+
+  void saveTokenTimestamp(String username,long mills);
+
+  Long getTokenTimestamp(String username);
 }

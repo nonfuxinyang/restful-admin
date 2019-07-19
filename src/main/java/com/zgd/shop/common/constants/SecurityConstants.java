@@ -17,4 +17,10 @@ public interface SecurityConstants {
    * token参数头
    */
   String HEADER = "AccessToken";
+
+
+  /**
+   * 时间戳
+   */
+  String TIME_STAMP = "timeStamp";
 }
