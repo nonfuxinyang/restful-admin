@@ -1,7 +1,10 @@
 package com.zgd.shop.web.auth.filter;
 
 import com.zgd.shop.common.constants.SecurityConstants;
+import com.zgd.shop.common.util.ResponseUtil;
 import com.zgd.shop.common.util.jwt.JwtTokenUtil;
+import com.zgd.shop.core.error.ErrorCodeConstants;
+import com.zgd.shop.core.result.ResultUtil;
 import com.zgd.shop.web.auth.user.CustomerUserDetailService;
 import com.zgd.shop.web.auth.user.CustomerUserDetails;
 import com.zgd.shop.web.auth.user.UserSessionService;
@@ -10,6 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -46,7 +50,7 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
     	String authHeader = request.getHeader(SecurityConstants.HEADER);
 
         if (authHeader != null && authHeader.startsWith(SecurityConstants.TOKEN_SPLIT)) {
-
+            //请求头有token
             final String authToken = authHeader.substring(SecurityConstants.TOKEN_SPLIT.length());
 
             String username;
@@ -63,9 +67,20 @@ public class CustomerJwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     //session未过期，比对时间戳是否一致，是则重新颁发token
                     if (isSameTimestampToken(username,e.getClaims())){
                         userTokenManager.awardAccessToken(userDetails,true);
+                        //直接设置响应码为201,直接返回
+                        return;
+                    }else{
+                        //时间戳不一致.无效token,无法刷新token,响应码401,前端跳转登录页
+                        ResponseUtil.out(HttpStatus.UNAUTHORIZED.value(),ResultUtil.failure(ErrorCodeConstants.REQUIRED_LOGIN_ERROR));
+                        return;
                     }
+                }else{
+                    //直接放行,交给后面的handler处理,如果当前请求是需要访问权限,则会由CustomerRestAccessDeniedHandler处理
+                    chain.doFilter(request, response);
+                    return;
                 }
             }
+
             //避免每次请求都请求数据库查询用户信息，从缓存中查询
             CustomerUserDetails userDetails = userSessionService.getSessionByUsername(username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

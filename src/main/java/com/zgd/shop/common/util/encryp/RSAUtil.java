@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.crypto.Cipher;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.*;
@@ -51,7 +52,7 @@ public class RSAUtil {
   /**
    * 生成字符串类型的公钥、私钥对
    *
-   * @return
+   * @return RsaKeyPair
    */
   public static RsaKeyPair generateKeys() {
     // 默认长度1024
@@ -62,15 +63,15 @@ public class RSAUtil {
   /**
    * 生成字符串类型的公钥、私钥对
    *
-   * @return
+   * @return RsaKeyPair
    */
   public static RsaKeyPair generateKeys(int keyLength) {
     RsaKeyPair keys = new RsaKeyPair();
     KeyPair keyPair = generateRSAKeyPair(keyLength);
     if (keyPair != null) {
 
-      String publicKeyString = new String(Base64.getEncoder().encode(keyPair.getPublic().getEncoded()), Charset.forName("UTF-8"));
-      String privateKeyString = new String(Base64.getEncoder().encode(keyPair.getPrivate().getEncoded()), Charset.forName("UTF-8"));
+      String publicKeyString = new String(Base64.getEncoder().encode(keyPair.getPublic().getEncoded()), StandardCharsets.UTF_8);
+      String privateKeyString = new String(Base64.getEncoder().encode(keyPair.getPrivate().getEncoded()), StandardCharsets.UTF_8);
       keys.setPublicKey(publicKeyString);
       keys.setPrivateKey(privateKeyString);
     }
@@ -204,7 +205,7 @@ public class RSAUtil {
       signature.initSign(priKey);
       signature.update(content.getBytes());
       byte[] sign = signature.sign();
-      return new String(Base64.getEncoder().encode(sign), Charset.forName("UTF-8"));
+      return new String(Base64.getEncoder().encode(sign), StandardCharsets.UTF_8);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -252,7 +253,7 @@ public class RSAUtil {
       cipher = Cipher.getInstance("RSA");
       cipher.init(Cipher.ENCRYPT_MODE, publicKey);
       byte[] output = cipher.doFinal(plainText.getBytes());
-      return new String(Base64.getEncoder().encode(output), Charset.forName("UTF-8"));
+      return new String(Base64.getEncoder().encode(output), StandardCharsets.UTF_8);
     } catch (Exception e) {
       e.printStackTrace();
     }
