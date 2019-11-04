@@ -3,6 +3,7 @@ package com.zgd.shop.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.zgd.base.util.encryp.AESUtil;
 import com.zgd.shop.dao.entity.model.Role;
 import com.zgd.shop.dao.entity.model.User;
 import com.zgd.shop.dao.entity.model.UserRole;
@@ -10,7 +11,6 @@ import com.zgd.shop.dao.mapper.UserMapper;
 import com.zgd.shop.service.IRoleService;
 import com.zgd.shop.service.IUserRoleService;
 import com.zgd.shop.service.IUserService;
-import com.zgd.shop.common.util.encryp.AESUtil;
 import com.zgd.shop.web.auth.encoder.MyAesPasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
       user.setStatus(1);
       String password = user.getPassword();
       //aes加密
-      String encrypt = AESUtil.encrypt(password, MyAesPasswordEncoder.SECRET_KEY);
+      String encrypt = AESUtil.encrypt2Base64ByRandom(password, MyAesPasswordEncoder.SECRET_SEED);
       user.setPassword(encrypt);
       super.insert(user);
 

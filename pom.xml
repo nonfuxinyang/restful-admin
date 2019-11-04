@@ -109,6 +109,11 @@
             <version>28.0-jre</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.zgd.base</groupId>
+            <artifactId>util-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

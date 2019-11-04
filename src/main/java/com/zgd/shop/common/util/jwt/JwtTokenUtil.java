@@ -1,7 +1,7 @@
 package com.zgd.shop.common.util.jwt;
 
 import com.alibaba.fastjson.JSON;
-import com.zgd.shop.common.util.encryp.AESUtil;
+import com.zgd.base.util.encryp.AESUtil;
 import com.zgd.shop.common.util.encryp.RSAUtil;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +76,7 @@ public class JwtTokenUtil {
       key = privateKey;
     } else {
       algorithm = SignatureAlgorithm.HS256;
-      key = AESUtil.generalKey(SECRET_KEY);
+      key = AESUtil.getRandomKeyBySeed(SECRET_KEY);
     }
 
     Date nowDate = new Date();
@@ -155,7 +155,7 @@ public class JwtTokenUtil {
       //RSA
       key = publicKey;
     } else {
-      key = AESUtil.generalKey(SECRET_KEY);
+      key = AESUtil.getRandomKeyBySeed(SECRET_KEY);
     }
     try {
       return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
@@ -223,8 +223,8 @@ public class JwtTokenUtil {
     HashMap<String, Object> map = new HashMap<>(1);
     map.put("name", "zgd");
     map.put("age", "18");
-//    String generateToken = generateToken("aaa", map, 1000L * 60);
-//    System.out.println("generateToken = " + generateToken);
+    String generateToken = generateToken("aaa", map, 1000L * 60);
+    System.out.println("generateToken = " + generateToken);
     String sign = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemdkIiwiaXNzIjoiemdkIiwic3ViIjoiYWFhIiwiZXhwIjoxNTYzMzU0OTgxLCJpYXQiOjE1NjMzNTQ5MjIsImFnZSI6IjE4In0.oPfGAgwcGNDKUAcMR_Tf8p9_Tc3u7B5gYCwt2QCgf7M";
 
     boolean b = validateToken(sign);
